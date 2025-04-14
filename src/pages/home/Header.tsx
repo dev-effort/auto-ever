@@ -1,6 +1,13 @@
 import styled from "@emotion/styled";
+import { useNavigate } from "react-router-dom";
 
 export const Header = () => {
+  const navigate = useNavigate();
+
+  const handleClick = (path: string) => {
+    navigate(path);
+  };
+
   return (
     <Container>
       <HeaderInner>
@@ -8,16 +15,16 @@ export const Header = () => {
         <Navigation>
           <Ul>
             <Li>
-              <Menu href="/Guide">서비스 소개</Menu>
+              <Menu onClick={() => handleClick("/Guide")}>서비스 소개</Menu>
             </Li>
             <Li>
-              <Menu href="/FAQ">자주 묻는 질문</Menu>
+              <Menu onClick={() => handleClick("/FAQ")}>자주 묻는 질문</Menu>
             </Li>
             <Li>
-              <Menu href="/News">새소식</Menu>
+              <Menu onClick={() => handleClick("/News")}>새소식</Menu>
             </Li>
             <Li>
-              <Menu href="/Counsel">상담문의</Menu>
+              <Menu onClick={() => handleClick("/Counsel")}>상담문의</Menu>
             </Li>
           </Ul>
         </Navigation>
@@ -78,4 +85,7 @@ const Menu = styled.a`
   padding: 0 4px;
   position: relative;
   text-decoration: none;
+  &:hover {
+    cursor: pointer;
+  }
 `;

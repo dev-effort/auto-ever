@@ -1,11 +1,11 @@
 import { ThemeProvider } from "@emotion/react";
 import { colorSet } from "./styles/ColorSet";
-import { Home } from "./pages/home/Home";
+import { Routing } from "./Routing";
 
 function App() {
   return (
     <ThemeProvider theme={{ colors: colorSet }}>
-      <Home />
+      <Routing />
     </ThemeProvider>
   );
 }

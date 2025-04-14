@@ -1,10 +1,14 @@
 import styled from "@emotion/styled";
 import { Header } from "./Header";
+import { Outlet } from "react-router-dom";
 
 export const Home = () => {
   return (
     <Container>
       <Header />
+      <BodyWrapper>
+        <Outlet />
+      </BodyWrapper>
     </Container>
   );
 };
@@ -14,4 +18,9 @@ const Container = styled.div`
   height: 100%;
   background-color: ${(props) => props.theme.colors.bg.primary};
   box-sizing: border-box;
+`;
+
+const BodyWrapper = styled.div`
+  padding: 0 48px 96px;
+  min-height: calc(100vh - 80px - 176px);
 `;

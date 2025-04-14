@@ -2,6 +2,7 @@ export type ColorSet = {
   bg: {
     primary: string;
     secondary: string;
+    inverse: string;
   };
   text: {
     primary: string;
@@ -23,9 +24,10 @@ export const colorSet: ColorSet = {
   bg: {
     primary: "#ffffff",
     secondary: "#f8f8f8",
+    inverse: "#000",
   },
   text: {
-    primary: "#05141f",
+    primary: "#000",
     secondary: "#697278",
     hint: "#b4b9bc",
     inverse: "#ffffff",
