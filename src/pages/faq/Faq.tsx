@@ -5,6 +5,15 @@ type Tab = "service" | "usage";
 
 export const Faq = () => {
   const [activeTab, setActiveTab] = useState<Tab>("service");
+  const [searchText, setSearchText] = useState<string>("");
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchText(e.target.value);
+  };
+
+  const clearSearch = () => {
+    setSearchText("");
+  };
 
   return (
     <Container>
@@ -32,9 +41,12 @@ export const Faq = () => {
         <SearchWrapper>
           <SearchInputWrapper>
             <SearchInput
-              placeholder="찾으시는 내용을 입력해주세요"
+              placeholder="찾으시는 내용을 입력해 주세요"
               type="text"
+              value={searchText}
+              onChange={handleSearchChange}
             />
+            {searchText && <ClearButton onClick={clearSearch} />}
             <SearchButton />
           </SearchInputWrapper>
         </SearchWrapper>
@@ -119,11 +131,41 @@ const SearchInputWrapper = styled.div`
 
 const SearchInput = styled.input`
   border: 1px solid ${(props) => props.theme.colors.border.primary};
-  font-size: 1rem;
+  font-size: 18px;
   height: 56px;
   padding-left: 16px;
   padding-right: calc(24px + 16px + 56px - 2px);
   width: 100%;
+  outline: none;
+
+  ::placeholder {
+    color: ${(props) => props.theme.colors.text.hint};
+    font-size: 18px;
+  }
+`;
+
+const ClearButton = styled.button`
+  right: 55px;
+  align-items: center;
+  display: flex;
+  font-size: 0;
+  height: calc(100% - 2px);
+  justify-content: center;
+  position: absolute;
+  top: 1px;
+  width: 40px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+
+  ::before {
+    background: url("/public/clear.svg") no-repeat;
+    background-size: auto 100%;
+    content: "";
+    height: 24px;
+    width: 24px;
+  }
 `;
 
 const SearchButton = styled.button`
@@ -136,6 +178,9 @@ const SearchButton = styled.button`
   right: 1px;
   top: 1px;
   width: calc(56px - 2px);
+  background: none;
+  border: none;
+  padding: 0;
 
   ::before {
     background: url("/public/search.svg") no-repeat;
@@ -144,5 +189,6 @@ const SearchButton = styled.button`
     content: "검색";
     height: 32px;
     width: 32px;
+    cursor: pointer;
   }
 `;
