@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import { useState } from "react";
+import { Label } from "../../components/label/Label";
 
 type Tab = "service" | "usage";
 
@@ -51,6 +52,13 @@ export const Faq = () => {
           </SearchInputWrapper>
         </SearchWrapper>
       </SearchForm>
+
+      <FilterWrapper className="filter">
+        <Label htmlFor="all">전체</Label>
+        <Label htmlFor="service">서비스 상품</Label>
+        <Label htmlFor="consulting">도입 상담</Label>
+        <Label htmlFor="contract">계약</Label>
+      </FilterWrapper>
     </Container>
   );
 };
@@ -191,4 +199,11 @@ const SearchButton = styled.button`
     width: 32px;
     cursor: pointer;
   }
+`;
+
+const FilterWrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+  margin-right: -2px;
 `;
