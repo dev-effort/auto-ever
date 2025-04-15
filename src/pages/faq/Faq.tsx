@@ -13,6 +13,8 @@ export const Faq = () => {
     offset: 0,
   });
 
+  const [activeFaq, setActiveFaq] = useState<number>(-1);
+
   const [searchText, setSearchText] = useState<string>("");
 
   const { data: categories } = useGetCategories({ tab: queries.tab });
@@ -88,8 +90,25 @@ export const Faq = () => {
       <FaqListWrapper>
         {faqs?.items.map((item) => (
           <FaqItem key={item.id}>
-            <h2>{item.question}</h2>
-            <p>{item.answer}</p>
+            <FaqItemTitle active={item.id === activeFaq}>
+              <FaqItemButton
+                active={item.id === activeFaq}
+                onClick={() => {
+                  if (item.id === activeFaq) {
+                    setActiveFaq(-1);
+                  } else {
+                    setActiveFaq(item.id);
+                  }
+                }}
+              >
+                {queries.tab === "USAGE" && <em>{item.categoryName}</em>}
+                <em>{item.subCategoryName}</em>
+                <strong>{item.question}</strong>
+              </FaqItemButton>
+            </FaqItemTitle>
+            <FaqItemContent active={item.id === activeFaq}>
+              <FaqItemInner dangerouslySetInnerHTML={{ __html: item.answer }} />
+            </FaqItemContent>
           </FaqItem>
         ))}
       </FaqListWrapper>
@@ -251,4 +270,70 @@ const FaqListWrapper = styled.ul`
 
 const FaqItem = styled.li`
   border-bottom: 1px solid ${(props) => props.theme.colors.border.secondary};
+`;
+
+const FaqItemTitle = styled.h4<{ active: boolean }>`
+  background-color: ${(props) =>
+    props.active
+      ? props.theme.colors.bg.secondary
+      : props.theme.colors.bg.primary};
+  margin: 0;
+`;
+
+const FaqItemButton = styled.button<{ active: boolean }>`
+  -webkit-tap-highlight-color: transparent;
+  align-items: center;
+  display: flex;
+  font-size: 20px;
+  line-height: 1.4;
+  overflow: hidden;
+  padding: 24px 0;
+  padding-right: 76px + 1.6em;
+  position: relative;
+  width: 100%;
+  cursor: pointer;
+  background: none;
+  border: none;
+  & > em {
+    box-sizing: initial;
+    color: ${(props) => props.theme.colors.text.secondary};
+    padding: 0 24px;
+    width: 8em;
+  }
+  & > em + em {
+    width: 6em;
+  }
+  & > strong {
+    flex: 1 1;
+    padding-left: 24px;
+    text-align: left;
+    font-weight: 600;
+  }
+  ::after {
+    background: url("/public/arrow.svg") no-repeat;
+    background-size: auto 100%;
+    content: "";
+    height: 32px;
+    position: absolute;
+    right: 22px;
+    transition: transform 0.4s cubic-bezier(1, 0, 0.2, 1),
+      -webkit-transform 0.4s cubic-bezier(1, 0, 0.2, 1);
+    width: 32px;
+    transform: ${(props) => (props.active ? "rotate(180deg)" : "rotate(0deg)")};
+  }
+`;
+
+const FaqItemContent = styled.div<{ active: boolean }>`
+  display: ${(props) => (props.active ? "block" : "none")};
+`;
+
+const FaqItemInner = styled.div`
+  border-top: 1px solid ${(props) => props.theme.colors.border.tertiary};
+  font-size: 18px !important;
+  line-height: 1.8;
+  overflow-x: scroll;
+  padding: 32px 40px;
+  * {
+    all: revert;
+  }
 `;

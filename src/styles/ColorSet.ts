@@ -13,6 +13,7 @@ export type ColorSet = {
   border: {
     primary: string;
     secondary: string;
+    tertiary: string;
   };
   icon: {
     primary: string;
@@ -35,6 +36,7 @@ export const colorSet: ColorSet = {
   border: {
     primary: "#05141f",
     secondary: "#cdd0d2",
+    tertiary: "#e6e8e9",
   },
   icon: {
     primary: "#05141f",
