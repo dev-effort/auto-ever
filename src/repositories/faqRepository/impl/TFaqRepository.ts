@@ -45,7 +45,16 @@ class TFaqRepository extends TBaseRepository implements IFaqRepository {
         queries?.offset || 0 + (queries?.limit || 10)
       );
 
-    this.mockAdapter.onGet(url).reply(200, categoryFilteredMockFaqList);
+    this.mockAdapter.onGet(url).reply(200, {
+      items: categoryFilteredMockFaqList,
+      pageInfo: {
+        limit: queries?.limit || 10,
+        offset: queries?.offset || 0,
+        nextOffset: queries?.offset || 0 + (queries?.limit || 10),
+        prevOffset: queries?.offset || 0 - (queries?.limit || 10),
+        totalRecord: tabFilteredMockFaqList.length,
+      },
+    });
     const response = await this.axios.get<FaqListResponse>(url);
 
     return response;

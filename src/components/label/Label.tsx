@@ -1,13 +1,15 @@
 import styled from "@emotion/styled";
-import { PropsWithChildren } from "react";
+import { LabelHTMLAttributes, PropsWithChildren } from "react";
 
-type Props = PropsWithChildren<{
-  htmlFor: string;
-}>;
+type Props = PropsWithChildren<
+  LabelHTMLAttributes<HTMLLabelElement> & {
+    htmlFor: string;
+  }
+>;
 
-export const Label = ({ children, htmlFor }: Props) => {
+export const Label = ({ children, htmlFor, ...props }: Props) => {
   return (
-    <Container htmlFor={htmlFor}>
+    <Container htmlFor={htmlFor} {...props}>
       <UnvisibleInput type="radio" id={htmlFor} name="filter" />
       <LabelText>{children}</LabelText>
     </Container>

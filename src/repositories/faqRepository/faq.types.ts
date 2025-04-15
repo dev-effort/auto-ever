@@ -34,7 +34,7 @@ export type FaqCategoryID =
 
 export type FaqListFilter = {
   tab: FaqTab;
-  faqCategoryID: FaqCategoryID;
-  limit?: number;
-  offset?: number;
+  faqCategoryID?: FaqCategoryID;
+  limit: number;
+  offset: number;
 };

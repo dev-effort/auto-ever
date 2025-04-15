@@ -1,12 +1,21 @@
 import styled from "@emotion/styled";
 import { useState } from "react";
 import { Label } from "../../components/label/Label";
-
-type Tab = "service" | "usage";
+import { FaqListFilter } from "../../repositories/faqRepository/faq.types";
+import { useGetFaqList } from "../../queryHooks/useFaq";
 
 export const Faq = () => {
-  const [activeTab, setActiveTab] = useState<Tab>("service");
+  const [queries, setQueries] = useState<FaqListFilter>({
+    tab: "CONSULT",
+    faqCategoryID: undefined,
+    limit: 10,
+    offset: 0,
+  });
+
   const [searchText, setSearchText] = useState<string>("");
+
+  const { data } = useGetFaqList(queries);
+  console.debug(data);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchText(e.target.value);
@@ -25,14 +34,14 @@ export const Faq = () => {
 
       <Tabs>
         <Tab
-          active={activeTab === "service"}
-          onClick={() => setActiveTab("service")}
+          active={queries.tab === "CONSULT"}
+          onClick={() => setQueries({ ...queries, tab: "CONSULT" })}
         >
           서비스 도입
         </Tab>
         <Tab
-          active={activeTab === "usage"}
-          onClick={() => setActiveTab("usage")}
+          active={queries.tab === "USAGE"}
+          onClick={() => setQueries({ ...queries, tab: "USAGE" })}
         >
           서비스 이용
         </Tab>
@@ -54,11 +63,109 @@ export const Faq = () => {
       </SearchForm>
 
       <FilterWrapper className="filter">
-        <Label htmlFor="all">전체</Label>
-        <Label htmlFor="service">서비스 상품</Label>
-        <Label htmlFor="consulting">도입 상담</Label>
-        <Label htmlFor="contract">계약</Label>
+        <Label
+          htmlFor="all"
+          onClick={() => setQueries({ ...queries, faqCategoryID: undefined })}
+        >
+          전체
+        </Label>
+        {queries.tab === "CONSULT" ? (
+          <>
+            <Label
+              htmlFor="service"
+              onClick={() =>
+                setQueries({ ...queries, faqCategoryID: "PRODUCT" })
+              }
+            >
+              서비스 상품
+            </Label>
+            <Label
+              htmlFor="consulting"
+              onClick={() =>
+                setQueries({ ...queries, faqCategoryID: "COUNSELING" })
+              }
+            >
+              도입 상담
+            </Label>
+            <Label
+              htmlFor="contract"
+              onClick={() =>
+                setQueries({ ...queries, faqCategoryID: "CONTRACT" })
+              }
+            >
+              계약
+            </Label>
+          </>
+        ) : (
+          <>
+            <Label
+              htmlFor="signup"
+              onClick={() =>
+                setQueries({ ...queries, faqCategoryID: "SIGN_UP" })
+              }
+            >
+              가입문의
+            </Label>
+            <Label
+              htmlFor="business"
+              onClick={() =>
+                setQueries({ ...queries, faqCategoryID: "BUSINESS" })
+              }
+            >
+              비즈니스(업무용)
+            </Label>
+            <Label
+              htmlFor="accident"
+              onClick={() =>
+                setQueries({ ...queries, faqCategoryID: "ACCIDENT" })
+              }
+            >
+              사고/보험
+            </Label>
+            <Label
+              htmlFor="reservation"
+              onClick={() =>
+                setQueries({ ...queries, faqCategoryID: "RESERVATION" })
+              }
+            >
+              예약/결제
+            </Label>
+            <Label
+              htmlFor="vehicle"
+              onClick={() =>
+                setQueries({ ...queries, faqCategoryID: "VEHICLE" })
+              }
+            >
+              차량문의
+            </Label>
+            <Label
+              htmlFor="refuel"
+              onClick={() =>
+                setQueries({ ...queries, faqCategoryID: "REFUEL" })
+              }
+            >
+              충전
+            </Label>
+            <Label
+              htmlFor="coupon"
+              onClick={() =>
+                setQueries({ ...queries, faqCategoryID: "COUPON" })
+              }
+            >
+              쿠폰/기타
+            </Label>
+          </>
+        )}
       </FilterWrapper>
+
+      <FaqListWrapper>
+        {data?.items.map((item) => (
+          <FaqItem key={item.id}>
+            <h2>{item.question}</h2>
+            <p>{item.answer}</p>
+          </FaqItem>
+        ))}
+      </FaqListWrapper>
     </Container>
   );
 };
@@ -206,4 +313,15 @@ const FilterWrapper = styled.div`
   flex-wrap: wrap;
   margin-bottom: 24px;
   margin-right: -2px;
+`;
+
+const FaqListWrapper = styled.ul`
+  border-top: 2px solid ${(props) => props.theme.colors.border.primary};
+  margin: 0;
+  list-style: none;
+  padding: 0;
+`;
+
+const FaqItem = styled.li`
+  border-bottom: 1px solid ${(props) => props.theme.colors.border.secondary};
 `;
