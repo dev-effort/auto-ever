@@ -1,9 +1,36 @@
 import styled from "@emotion/styled";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Label } from "../../components/label/Label";
 import { FaqListFilters } from "../../repositories/faqRepository/faq.types";
 import { useGetFaqList } from "../../queryHooks/useFaq";
 import { useGetCategories } from "../../queryHooks/useCategory";
+
+// 아코디언 애니메이션을 위한 컴포넌트
+interface AccordionContentProps {
+  isOpen: boolean;
+  children: React.ReactNode;
+}
+
+const AccordionContent: React.FC<AccordionContentProps> = ({
+  isOpen,
+  children,
+}) => {
+  const contentRef = useRef<HTMLDivElement>(null);
+  const [height, setHeight] = useState<number | undefined>(0);
+
+  useEffect(() => {
+    if (contentRef.current) {
+      const scrollHeight = contentRef.current.scrollHeight;
+      setHeight(isOpen ? scrollHeight : 0);
+    }
+  }, [isOpen, children]);
+
+  return (
+    <AccordionWrapper style={{ height: height === 0 ? "0px" : height }}>
+      <div ref={contentRef}>{children}</div>
+    </AccordionWrapper>
+  );
+};
 
 export const Faq = () => {
   const [queries, setQueries] = useState<FaqListFilters>({
@@ -14,7 +41,6 @@ export const Faq = () => {
   });
 
   const [activeFaq, setActiveFaq] = useState<number>(-1);
-
   const [searchText, setSearchText] = useState<string>("");
 
   const { data: categories } = useGetCategories({ tab: queries.tab });
@@ -106,9 +132,60 @@ export const Faq = () => {
                 <strong>{item.question}</strong>
               </FaqItemButton>
             </FaqItemTitle>
-            <FaqItemContent active={item.id === activeFaq}>
+            <AccordionContent isOpen={item.id === activeFaq}>
               <FaqItemInner dangerouslySetInnerHTML={{ __html: item.answer }} />
-            </FaqItemContent>
+            </AccordionContent>
+          </FaqItem>
+        ))}
+      </FaqListWrapper>
+
+      <FaqListWrapper>
+        {faqs?.items.map((item) => (
+          <FaqItem key={item.id}>
+            <FaqItemTitle active={item.id === activeFaq}>
+              <FaqItemButton
+                active={item.id === activeFaq}
+                onClick={() => {
+                  if (item.id === activeFaq) {
+                    setActiveFaq(-1);
+                  } else {
+                    setActiveFaq(item.id);
+                  }
+                }}
+              >
+                {queries.tab === "USAGE" && <em>{item.categoryName}</em>}
+                <em>{item.subCategoryName}</em>
+                <strong>{item.question}</strong>
+              </FaqItemButton>
+            </FaqItemTitle>
+            <AccordionContent isOpen={item.id === activeFaq}>
+              <FaqItemInner dangerouslySetInnerHTML={{ __html: item.answer }} />
+            </AccordionContent>
+          </FaqItem>
+        ))}
+      </FaqListWrapper>
+      <FaqListWrapper>
+        {faqs?.items.map((item) => (
+          <FaqItem key={item.id}>
+            <FaqItemTitle active={item.id === activeFaq}>
+              <FaqItemButton
+                active={item.id === activeFaq}
+                onClick={() => {
+                  if (item.id === activeFaq) {
+                    setActiveFaq(-1);
+                  } else {
+                    setActiveFaq(item.id);
+                  }
+                }}
+              >
+                {queries.tab === "USAGE" && <em>{item.categoryName}</em>}
+                <em>{item.subCategoryName}</em>
+                <strong>{item.question}</strong>
+              </FaqItemButton>
+            </FaqItemTitle>
+            <AccordionContent isOpen={item.id === activeFaq}>
+              <FaqItemInner dangerouslySetInnerHTML={{ __html: item.answer }} />
+            </AccordionContent>
           </FaqItem>
         ))}
       </FaqListWrapper>
@@ -323,8 +400,9 @@ const FaqItemButton = styled.button<{ active: boolean }>`
   }
 `;
 
-const FaqItemContent = styled.div<{ active: boolean }>`
-  display: ${(props) => (props.active ? "block" : "none")};
+const AccordionWrapper = styled.div`
+  overflow: hidden;
+  transition: height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 `;
 
 const FaqItemInner = styled.div`
