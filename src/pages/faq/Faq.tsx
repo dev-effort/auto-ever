@@ -1,11 +1,12 @@
 import styled from "@emotion/styled";
 import { useState } from "react";
 import { Label } from "../../components/label/Label";
-import { FaqListFilter } from "../../repositories/faqRepository/faq.types";
+import { FaqListFilters } from "../../repositories/faqRepository/faq.types";
 import { useGetFaqList } from "../../queryHooks/useFaq";
+import { useGetCategories } from "../../queryHooks/useCategory";
 
 export const Faq = () => {
-  const [queries, setQueries] = useState<FaqListFilter>({
+  const [queries, setQueries] = useState<FaqListFilters>({
     tab: "CONSULT",
     faqCategoryID: undefined,
     limit: 10,
@@ -14,8 +15,8 @@ export const Faq = () => {
 
   const [searchText, setSearchText] = useState<string>("");
 
-  const { data } = useGetFaqList(queries);
-  console.debug(data);
+  const { data: categories } = useGetCategories({ tab: queries.tab });
+  const { data: faqs } = useGetFaqList(queries);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchText(e.target.value);
@@ -69,97 +70,23 @@ export const Faq = () => {
         >
           전체
         </Label>
-        {queries.tab === "CONSULT" ? (
-          <>
+        {categories?.map((category) => {
+          return (
             <Label
-              htmlFor="service"
+              key={category.categoryID}
+              htmlFor={category.categoryID}
               onClick={() =>
-                setQueries({ ...queries, faqCategoryID: "PRODUCT" })
+                setQueries({ ...queries, faqCategoryID: category.categoryID })
               }
             >
-              서비스 상품
+              {category.name}
             </Label>
-            <Label
-              htmlFor="consulting"
-              onClick={() =>
-                setQueries({ ...queries, faqCategoryID: "COUNSELING" })
-              }
-            >
-              도입 상담
-            </Label>
-            <Label
-              htmlFor="contract"
-              onClick={() =>
-                setQueries({ ...queries, faqCategoryID: "CONTRACT" })
-              }
-            >
-              계약
-            </Label>
-          </>
-        ) : (
-          <>
-            <Label
-              htmlFor="signup"
-              onClick={() =>
-                setQueries({ ...queries, faqCategoryID: "SIGN_UP" })
-              }
-            >
-              가입문의
-            </Label>
-            <Label
-              htmlFor="business"
-              onClick={() =>
-                setQueries({ ...queries, faqCategoryID: "BUSINESS" })
-              }
-            >
-              비즈니스(업무용)
-            </Label>
-            <Label
-              htmlFor="accident"
-              onClick={() =>
-                setQueries({ ...queries, faqCategoryID: "ACCIDENT" })
-              }
-            >
-              사고/보험
-            </Label>
-            <Label
-              htmlFor="reservation"
-              onClick={() =>
-                setQueries({ ...queries, faqCategoryID: "RESERVATION" })
-              }
-            >
-              예약/결제
-            </Label>
-            <Label
-              htmlFor="vehicle"
-              onClick={() =>
-                setQueries({ ...queries, faqCategoryID: "VEHICLE" })
-              }
-            >
-              차량문의
-            </Label>
-            <Label
-              htmlFor="refuel"
-              onClick={() =>
-                setQueries({ ...queries, faqCategoryID: "REFUEL" })
-              }
-            >
-              충전
-            </Label>
-            <Label
-              htmlFor="coupon"
-              onClick={() =>
-                setQueries({ ...queries, faqCategoryID: "COUPON" })
-              }
-            >
-              쿠폰/기타
-            </Label>
-          </>
-        )}
+          );
+        })}
       </FilterWrapper>
 
       <FaqListWrapper>
-        {data?.items.map((item) => (
+        {faqs?.items.map((item) => (
           <FaqItem key={item.id}>
             <h2>{item.question}</h2>
             <p>{item.answer}</p>

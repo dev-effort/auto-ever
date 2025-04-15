@@ -1,12 +1,12 @@
 import { AxiosResponse } from "axios";
 import { TBaseRepository } from "../../TBaseRepository";
-import { FaqListFilter, FaqListResponse } from "../faq.types";
+import { FaqListFilters, FaqListResponse } from "../faq.types";
 import { IFaqRepository } from "../IFaqRepository";
 import { mockFaqConsultList, mockFaqUsageList } from "../mockData";
 
 class TFaqRepository extends TBaseRepository implements IFaqRepository {
   async getFaqList(
-    queries?: FaqListFilter
+    queries?: FaqListFilters
   ): Promise<AxiosResponse<FaqListResponse>> {
     const url = "/mock-api/faq";
 

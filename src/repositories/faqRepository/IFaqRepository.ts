@@ -1,6 +1,6 @@
 import { AxiosResponse } from "axios";
-import { FaqListFilter, FaqListResponse } from "./faq.types";
+import { FaqListFilters, FaqListResponse } from "./faq.types";
 
 export interface IFaqRepository {
-  getFaqList(queries?: FaqListFilter): Promise<AxiosResponse<FaqListResponse>>;
+  getFaqList(queries?: FaqListFilters): Promise<AxiosResponse<FaqListResponse>>;
 }

@@ -2,9 +2,12 @@ import type { PropsWithChildren } from "react";
 import { createContext, useContext } from "react";
 import { IFaqRepository } from "./faqRepository/IFaqRepository";
 import { tFaqRepo } from "./faqRepository/impl/TFaqRepository";
+import { ICategoryRepository } from "./categoryRepository/ICategoryRepository";
+import { tCategoryRepo } from "./categoryRepository/impl/TCategoryRepository";
 
 export type Repositories = {
   faqRepo: IFaqRepository;
+  categoryRepo: ICategoryRepository;
 };
 
 const repositoryContext = createContext<Repositories | null>(null);
@@ -23,6 +26,7 @@ export const useRepository = () => {
 // eslint-disable-next-line react-refresh/only-export-components
 export const defaultRepos: Repositories = {
   faqRepo: tFaqRepo,
+  categoryRepo: tCategoryRepo,
 };
 
 export const RepositoryProvider = ({

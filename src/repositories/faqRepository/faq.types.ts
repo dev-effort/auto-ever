@@ -1,3 +1,5 @@
+import { CategoryID } from "../categoryRepository/category.types";
+
 export type FaqListResponse = {
   items: FaqItem[];
   pageInfo: PageInfo;
@@ -20,21 +22,10 @@ export type PageInfo = {
 };
 
 export type FaqTab = "CONSULT" | "USAGE";
-export type FaqCategoryID =
-  | "PRODUCT"
-  | "COUNSELING"
-  | "CONTRACT"
-  | "SIGN_UP"
-  | "BUSINESS"
-  | "ACCIDENT"
-  | "RESERVATION"
-  | "VEHICLE"
-  | "REFUEL"
-  | "COUPON";
 
-export type FaqListFilter = {
+export type FaqListFilters = {
   tab: FaqTab;
-  faqCategoryID?: FaqCategoryID;
+  faqCategoryID?: CategoryID;
   limit: number;
   offset: number;
 };

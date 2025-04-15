@@ -1,5 +1,5 @@
 import {
-  FaqListFilter,
+  FaqListFilters,
   FaqListResponse,
 } from "../repositories/faqRepository/faq.types";
 import { useQuery } from "@tanstack/react-query";
@@ -11,11 +11,11 @@ import { useCallback } from "react";
 export const faqQueryKey = {
   all: ["faq"] as const,
   lists: () => [...faqQueryKey.all, "list"] as const,
-  list: (queries: FaqListFilter) => [...faqQueryKey.lists(), queries] as const,
+  list: (queries: FaqListFilters) => [...faqQueryKey.lists(), queries] as const,
 };
 
 export const useGetFaqList = (
-  queries: FaqListFilter,
+  queries: FaqListFilters,
   options?: UseQueryOptionsType<FaqListResponse, FaqListResponseModel>
 ) => {
   const { faqRepo } = useRepository();
