@@ -73,7 +73,13 @@ export const Faq = () => {
         </Tab>
         <Tab
           active={queries.tab === "USAGE"}
-          onClick={() => setQueries({ ...queries, tab: "USAGE" })}
+          onClick={() =>
+            setQueries({
+              ...queries,
+              tab: "USAGE",
+              faqCategoryID: undefined,
+            })
+          }
         >
           서비스 이용
         </Tab>
@@ -171,6 +177,23 @@ export const Faq = () => {
         )}
       </FaqListWrapper>
 
+      {faqs &&
+        faqs.pageInfo.totalRecord > 10 &&
+        faqs?.pageInfo.nextOffset < faqs?.pageInfo.totalRecord && (
+          <MoreButton
+            type="button"
+            onClick={() => {
+              setQueries({
+                ...queries,
+                offset: faqs?.pageInfo.nextOffset,
+              });
+            }}
+          >
+            <i />
+            <span>더보기</span>
+          </MoreButton>
+        )}
+
       <ServiceInquiry />
 
       <Process />
@@ -183,6 +206,48 @@ export const Faq = () => {
 const Container = styled.div`
   margin: 0 auto;
   max-width: 1240px;
+`;
+
+const MoreButton = styled.button`
+  align-items: center;
+  display: flex;
+  font-size: 18px;
+  height: 56px;
+  justify-content: center;
+  margin-top: 40px;
+  width: 100%;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  & > i {
+    height: 14px;
+    margin-right: 4px;
+    margin-top: -2px;
+    position: relative;
+    transition: transform 0.4s cubic-bezier(1, 0, 0.2, 1),
+      -webkit-transform 0.4s cubic-bezier(1, 0, 0.2, 1);
+    width: 14px;
+    ::before {
+      background-color: ${(props) => props.theme.colors.border.primary};
+      content: "";
+      height: 2px;
+      left: 0;
+      position: absolute;
+      top: calc(50% - 1px);
+      width: 100%;
+    }
+    ::after {
+      transform: rotate(90deg);
+      background-color: ${(props) => props.theme.colors.border.primary};
+      content: "";
+      height: 2px;
+      left: 0;
+      position: absolute;
+      top: calc(50% - 1px);
+      width: 100%;
+    }
+  }
 `;
 
 const Title = styled.h1`

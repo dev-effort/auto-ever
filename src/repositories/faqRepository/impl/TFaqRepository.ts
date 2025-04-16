@@ -55,14 +55,14 @@ class TFaqRepository extends TBaseRepository implements IFaqRepository {
 
     this.mockAdapter.onGet(url).reply(200, {
       items: faqList.slice(
-        queries?.offset || 0,
-        queries?.offset || 0 + (queries?.limit || 10)
+        0,
+        (queries?.offset as number) + (queries?.limit as number)
       ),
       pageInfo: {
         limit: queries?.limit || 10,
         offset: queries?.offset || 0,
-        nextOffset: queries?.offset || 0 + (queries?.limit || 10),
-        prevOffset: queries?.offset || 0 - (queries?.limit || 10),
+        nextOffset: (queries?.offset as number) + (queries?.limit as number),
+        prevOffset: (queries?.offset as number) - (queries?.limit as number),
         totalRecord: faqList.length,
       },
     });
