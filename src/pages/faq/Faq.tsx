@@ -19,7 +19,7 @@ export const Faq = () => {
   const navigate = useNavigate();
 
   const [activeFaq, setActiveFaq] = useState<number>(-1);
-  const [searchText, setSearchText] = useState<string>("");
+  const [searchText, setSearchText] = useState<string | undefined>();
 
   const { data: categories } = useGetCategories({ tab: queries.tab });
   const { data: faqs } = useGetFaqList(queries);
@@ -28,20 +28,21 @@ export const Faq = () => {
     setSearchText(e.target.value);
   };
 
-  const clearSearch = () => {
-    setSearchText("");
+  const clearSearch = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    setSearchText(undefined);
   };
 
-  const handleSearch = () => {
+  const handleSearch = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
     setQueries({ ...queries, question: searchText });
   };
 
   const handleKeyDownSearch = (
     e: React.KeyboardEvent<HTMLInputElement> | undefined
   ) => {
-    console.debug("hey");
     if (e?.key === "Enter") {
-      handleSearch();
+      setQueries({ ...queries, question: searchText });
     }
   };
 
@@ -73,7 +74,7 @@ export const Faq = () => {
             <SearchInput
               placeholder="찾으시는 내용을 입력해 주세요"
               type="text"
-              value={searchText}
+              value={searchText || ""}
               onKeyDown={handleKeyDownSearch}
               onChange={handleSearchChange}
             />
@@ -82,6 +83,24 @@ export const Faq = () => {
           </SearchInputWrapper>
         </SearchWrapper>
       </SearchForm>
+
+      {queries?.question && (
+        <SearchInfo>
+          <h2>
+            검색결과 총 <em>{faqs?.pageInfo.totalRecord}</em>건
+          </h2>
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              setSearchText(undefined);
+              setQueries({ ...queries, question: undefined });
+            }}
+          >
+            검색 초기화
+          </button>
+        </SearchInfo>
+      )}
 
       <FilterWrapper className="filter">
         <Label
@@ -108,29 +127,37 @@ export const Faq = () => {
       </FilterWrapper>
 
       <FaqListWrapper>
-        {faqs?.items.map((item) => (
-          <FaqItem key={item.id}>
-            <FaqItemTitle active={item.id === activeFaq}>
-              <FaqItemButton
-                active={item.id === activeFaq}
-                onClick={() => {
-                  if (item.id === activeFaq) {
-                    setActiveFaq(-1);
-                  } else {
-                    setActiveFaq(item.id);
-                  }
-                }}
-              >
-                {queries.tab === "USAGE" && <em>{item.categoryName}</em>}
-                <em>{item.subCategoryName}</em>
-                <strong>{item.question}</strong>
-              </FaqItemButton>
-            </FaqItemTitle>
-            <AccordionContent isOpen={item.id === activeFaq}>
-              <FaqItemInner dangerouslySetInnerHTML={{ __html: item.answer }} />
-            </AccordionContent>
-          </FaqItem>
-        ))}
+        {faqs?.pageInfo.totalRecord !== 0 ? (
+          faqs?.items.map((item) => (
+            <FaqItem key={item.id}>
+              <FaqItemTitle active={item.id === activeFaq}>
+                <FaqItemButton
+                  active={item.id === activeFaq}
+                  onClick={() => {
+                    if (item.id === activeFaq) {
+                      setActiveFaq(-1);
+                    } else {
+                      setActiveFaq(item.id);
+                    }
+                  }}
+                >
+                  {queries.tab === "USAGE" && <em>{item.categoryName}</em>}
+                  <em>{item.subCategoryName}</em>
+                  <strong>{item.question}</strong>
+                </FaqItemButton>
+              </FaqItemTitle>
+              <AccordionContent isOpen={item.id === activeFaq}>
+                <FaqItemInner
+                  dangerouslySetInnerHTML={{ __html: item.answer }}
+                />
+              </AccordionContent>
+            </FaqItem>
+          ))
+        ) : (
+          <NoResult>
+            <p>검색 결과가 없습니다</p>
+          </NoResult>
+        )}
       </FaqListWrapper>
       <SubHeadline>서비스 문의</SubHeadline>
       <InquiryInfo>
@@ -271,7 +298,7 @@ const Tab = styled.li<{ active: boolean }>`
       : props.theme.colors.text.primary};
 `;
 
-const SearchForm = styled.form`
+const SearchForm = styled.div`
   display: block;
   margin-top: 0em;
 `;
@@ -656,5 +683,59 @@ const AppInfo = styled.div`
     ::before {
       background-image: url("/apple.svg");
     }
+  }
+`;
+
+const SearchInfo = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin: 24px 0;
+
+  & > h2 {
+    margin: 0;
+    font-size: 24px;
+    line-height: 1.4;
+    font-weight: 600;
+    & > em {
+      color: ${(props) => props.theme.colors.text.primary};
+    }
+  }
+  & > button {
+    align-items: center;
+    display: flex;
+    font-size: 16px;
+    padding: 0 4px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    ::before {
+      background: url("/refresh.svg") no-repeat;
+      background-size: auto 100%;
+      content: "";
+      height: 24px;
+      margin-right: 2px;
+      width: 24px;
+    }
+  }
+`;
+
+const NoResult = styled.div`
+  border-bottom: 1px solid ${(props) => props.theme.colors.border.secondary};
+  padding: 160px 0;
+  text-align: center;
+  ::before {
+    background: url("/error.svg") no-repeat;
+    background-size: auto 100%;
+    content: "";
+    display: block;
+    height: 64px;
+    margin: 0 auto 16px;
+    width: 64px;
+  }
+  & > p {
+    color: ${(props) => props.theme.colors.text.secondary};
+    line-height: 1.6;
+    margin-top: 16px;
+    word-break: keep-all;
   }
 `;

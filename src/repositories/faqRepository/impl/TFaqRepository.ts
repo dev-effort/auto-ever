@@ -63,7 +63,7 @@ class TFaqRepository extends TBaseRepository implements IFaqRepository {
         offset: queries?.offset || 0,
         nextOffset: queries?.offset || 0 + (queries?.limit || 10),
         prevOffset: queries?.offset || 0 - (queries?.limit || 10),
-        totalRecord: tabFilteredMockFaqList.length,
+        totalRecord: faqList.length,
       },
     });
     const response = await this.axios.get<FaqListResponse>(url);
