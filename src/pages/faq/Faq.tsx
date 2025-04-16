@@ -10,6 +10,7 @@ import { Process } from "./Process";
 import { AppInfo } from "./AppInfo";
 
 export const Faq = () => {
+  // faq api query
   const [queries, setQueries] = useState<FaqListFilters>({
     tab: "CONSULT",
     faqCategoryID: undefined,
@@ -18,26 +19,36 @@ export const Faq = () => {
     question: undefined,
   });
 
+  // faq 상세 페이지 제어
   const [activeFaq, setActiveFaq] = useState<number>(-1);
+
+  // 검색어 value
   const [searchText, setSearchText] = useState<string | undefined>();
 
+  // 카테고리 목록 조회
   const { data: categories } = useGetCategories({ tab: queries.tab });
+
+  // faq 목록 조회
   const { data: faqs } = useGetFaqList(queries);
 
+  // 검색어 변경
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchText(e.target.value);
   };
 
+  // 검색 초기화
   const clearSearch = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     setSearchText(undefined);
   };
 
+  // 검색을 수행
   const handleSearch = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     setQueries({ ...queries, question: searchText });
   };
 
+  // 검색 input에서 enter키 입력하여 검색 수행
   const handleKeyDownSearch = (
     e: React.KeyboardEvent<HTMLInputElement> | undefined
   ) => {

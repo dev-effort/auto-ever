@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 export const ServiceInquiry = () => {
   const navigate = useNavigate();
+
   return (
     <>
       <SubHeadline>서비스 문의</SubHeadline>
