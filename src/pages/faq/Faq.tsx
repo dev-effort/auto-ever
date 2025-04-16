@@ -301,6 +301,10 @@ const TitleDescription = styled.em`
 const Tabs = styled.ul`
   display: flex;
   margin-bottom: 48px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
 `;
 
 const Tab = styled.li<{ active: boolean }>`
@@ -327,6 +331,14 @@ const Tab = styled.li<{ active: boolean }>`
     props.active
       ? props.theme.colors.text.inverse
       : props.theme.colors.text.primary};
+
+  @media (max-width: 768px) {
+    width: 100%;
+
+    &:not(:first-of-type) {
+      border-top: none;
+    }
+  }
 `;
 
 const SearchForm = styled.div`
