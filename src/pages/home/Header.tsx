@@ -50,7 +50,7 @@ const HeaderInner = styled.div`
   align-items: center;
   flex-wrap: wrap;
   height: 80px;
-  margin: 0 82px;
+  margin: 0 auto;
   box-sizing: border-box;
   max-width: 1660px;
 
