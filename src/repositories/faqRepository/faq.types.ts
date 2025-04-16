@@ -28,4 +28,5 @@ export type FaqListFilters = {
   faqCategoryID?: CategoryID;
   limit: number;
   offset: number;
+  question?: string;
 };

@@ -13,6 +13,7 @@ export const Faq = () => {
     faqCategoryID: undefined,
     limit: 10,
     offset: 0,
+    question: undefined,
   });
 
   const navigate = useNavigate();
@@ -29,6 +30,10 @@ export const Faq = () => {
 
   const clearSearch = () => {
     setSearchText("");
+  };
+
+  const handleSearch = () => {
+    setQueries({ ...queries, question: searchText });
   };
 
   return (
@@ -63,7 +68,7 @@ export const Faq = () => {
               onChange={handleSearchChange}
             />
             {searchText && <ClearButton onClick={clearSearch} />}
-            <SearchButton />
+            <SearchButton type="button" onClick={handleSearch} />
           </SearchInputWrapper>
         </SearchWrapper>
       </SearchForm>
