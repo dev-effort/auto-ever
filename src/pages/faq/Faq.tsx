@@ -5,6 +5,7 @@ import { FaqListFilters } from "../../repositories/faqRepository/faq.types";
 import { useGetFaqList } from "../../queryHooks/useFaq";
 import { useGetCategories } from "../../queryHooks/useCategory";
 import { AccordionContent } from "../../components/accordion/Accordion";
+import { useNavigate } from "react-router-dom";
 
 export const Faq = () => {
   const [queries, setQueries] = useState<FaqListFilters>({
@@ -13,6 +14,8 @@ export const Faq = () => {
     limit: 10,
     offset: 0,
   });
+
+  const navigate = useNavigate();
 
   const [activeFaq, setActiveFaq] = useState<number>(-1);
   const [searchText, setSearchText] = useState<string>("");
@@ -123,11 +126,11 @@ export const Faq = () => {
           <i className="document" />
           <span>서비스 제안서 다운로드</span>
         </InquiryButton>
-        <InquiryButton>
+        <InquiryButton onClick={() => navigate("/Counsel")}>
           <i className="write" />
           <span>상담문의 등록하기</span>
         </InquiryButton>
-        <InquiryButton>
+        <InquiryButton href="https://pf.kakao.com/_xfLxjdb" target="_blank">
           <i className="chat"></i>
           <span>
             카톡으로 문의하기
