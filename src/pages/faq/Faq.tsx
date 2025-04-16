@@ -67,7 +67,9 @@ export const Faq = () => {
       <Tabs>
         <Tab
           active={queries.tab === "CONSULT"}
-          onClick={() => setQueries({ ...queries, tab: "CONSULT" })}
+          onClick={() =>
+            setQueries({ ...queries, tab: "CONSULT", faqCategoryID: undefined })
+          }
         >
           서비스 도입
         </Tab>
@@ -123,7 +125,15 @@ export const Faq = () => {
         <Label
           htmlFor="all"
           checked={queries.faqCategoryID === undefined}
-          onChange={() => setQueries({ ...queries, faqCategoryID: undefined })}
+          onChange={() =>
+            setQueries({
+              tab: queries.tab,
+              faqCategoryID: undefined,
+              limit: 10,
+              offset: 0,
+              question: undefined,
+            })
+          }
         >
           전체
         </Label>
@@ -134,7 +144,13 @@ export const Faq = () => {
               htmlFor={category.categoryID}
               checked={queries.faqCategoryID === category.categoryID}
               onChange={() =>
-                setQueries({ ...queries, faqCategoryID: category.categoryID })
+                setQueries({
+                  tab: queries.tab,
+                  faqCategoryID: category.categoryID,
+                  limit: 10,
+                  offset: 0,
+                  question: undefined,
+                })
               }
             >
               {category.name}
