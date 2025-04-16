@@ -1,54 +1,52 @@
-# React + TypeScript + Vite
+### 실행 방법
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+1. 터미널에 yarn install을 통해 의존성을 설치합니다.
+2. 터미널에 yarn dev를 통해 실행시킵니다.
+3. 예시) http://localhost:5173로 접속합니다.
 
-Currently, two official plugins are available:
+## 구현 사항
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+`자주 묻는 질문` 페이지에 대한 구현
 
-## Expanding the ESLint configuration
+### 기능 리스트
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+1. 최상위 탭을 통한 카테고리 목록 조회
+2. 카테고리 별 FAQ 목록 조회 및 필터링
+3. 검색창을 통한 검색 기능 일체 (검색 건수 및 초기화, 검색 결과 없는 케이스, 검색창 비우기)
+4. FAQ 목록 (아코디언)
+5. 더보기 버튼을 통한 페이징 기능
+6. 각 페이지로의 라우팅
+7. 서비스 제안서 pdf 다운로드
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+### 아키텍처 및 프로젝트 구조
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Repository layer
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- 서버와 프론트간의 인터페이스를 하는 repository layer
+- repository layer는 객체지향의 interface를 통하여 컴포넌트와 통신
+- 서버 api 개발전, api 명세 협의 후 test repository를 만들어 사용하고, api 개발 후에는 실제 구현체 repository를 만들어 교체할 수 있는 구조
+- test repository 구현 시 axios-mock-adapter를 사용하여 api mocking.
+- mock data를 만들때는 faker 라이브러리를 사용 (해당 프로젝트에서는 실제 data가 있어 그 부분을 사용)
+- api의 명세는 types.ts에 정의
+- 각 타입은 model로 class로 정의 (해당 모델은 react-query의 반환 시 변환)
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+## 비동기 처리 및 model layer (react-query)
+
+- reactHooks 폴더에 repository 별로 queryhook을 개발
+- key를 관리
+- 값의 반환은 select를 통해 모델을 반환
+- model을 반환하는 것은 데이터에 대한 비지니스 로직 또는 포멧팅등을 하기 위함
+- 컴포넌트 내부 또는 jsx 내부에서 데이터의 변환, 포멧팅을 제한
+
+## 컴포넌트 layer
+
+- model과 jsx를 통한 화면 구성
+- emotion의 styled를 통한 스타일링
+- emtoion의 theme을 구성하여 공통의 css를 token으로 제공
+
+### 아쉬운 점
+
+시간 관계상 구현 하지 못한 기능
+
+- 검색어 2자 제한과 modal
+- footer의 이용약관 modal
