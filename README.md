@@ -55,3 +55,4 @@ vite, react, typescript, react-query, axios-mock-adapter, emotion, react-router-
 
 - 검색어 2자 제한과 modal
 - footer의 이용약관 modal
+- 반응형 웹
