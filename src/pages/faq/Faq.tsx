@@ -181,13 +181,15 @@ export const Faq = () => {
         </h2>
         <a
           className="google"
-          href="https://play.google.com/store/apps/details?id=com.kia.biz.app"
+          href="https://play.google.com/store/apps/details?id=kor.mop.user.app"
+          target="_blank"
         >
           Google Play
         </a>
         <a
           className="appstore"
           href="https://apps.apple.com/kr/app/%EC%9C%84%EB%B8%94-%EB%B9%84%EC%A6%88/id1598065794"
+          target="_blank"
         >
           App Store
         </a>
