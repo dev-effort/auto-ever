@@ -25,18 +25,6 @@
 
 vite, react, typescript, react-query, axios-mock-adapter, emotion, react-router-dom
 
-### 폴더구조
-
-|-public
-|-src
-|-|-assets
-|-|-components
-|-|-pages
-|-|-queryHooks
-|-|-repositories
-|-|-styles
-|-|-utils
-
 ### Repository layer
 
 - 서버와 프론트간의 인터페이스를 하는 repository layer
