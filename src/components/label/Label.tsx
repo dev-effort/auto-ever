@@ -5,10 +5,17 @@ type Props = PropsWithChildren<
   LabelHTMLAttributes<HTMLLabelElement> & {
     htmlFor: string;
     checked: boolean;
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   }
 >;
 
-export const Label = ({ children, htmlFor, checked, ...props }: Props) => {
+export const Label = ({
+  children,
+  htmlFor,
+  checked,
+  onChange,
+  ...props
+}: Props) => {
   return (
     <Container htmlFor={htmlFor} {...props}>
       <UnvisibleInput
@@ -16,6 +23,7 @@ export const Label = ({ children, htmlFor, checked, ...props }: Props) => {
         id={htmlFor}
         name="filter"
         checked={checked}
+        onChange={onChange}
       />
       <LabelText>{children}</LabelText>
     </Container>

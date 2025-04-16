@@ -36,6 +36,15 @@ export const Faq = () => {
     setQueries({ ...queries, question: searchText });
   };
 
+  const handleKeyDownSearch = (
+    e: React.KeyboardEvent<HTMLInputElement> | undefined
+  ) => {
+    console.debug("hey");
+    if (e?.key === "Enter") {
+      handleSearch();
+    }
+  };
+
   return (
     <Container>
       <Title>
@@ -65,6 +74,7 @@ export const Faq = () => {
               placeholder="찾으시는 내용을 입력해 주세요"
               type="text"
               value={searchText}
+              onKeyDown={handleKeyDownSearch}
               onChange={handleSearchChange}
             />
             {searchText && <ClearButton onClick={clearSearch} />}
@@ -77,7 +87,7 @@ export const Faq = () => {
         <Label
           htmlFor="all"
           checked={queries.faqCategoryID === undefined}
-          onClick={() => setQueries({ ...queries, faqCategoryID: undefined })}
+          onChange={() => setQueries({ ...queries, faqCategoryID: undefined })}
         >
           전체
         </Label>
@@ -87,7 +97,7 @@ export const Faq = () => {
               key={category.categoryID}
               htmlFor={category.categoryID}
               checked={queries.faqCategoryID === category.categoryID}
-              onClick={() =>
+              onChange={() =>
                 setQueries({ ...queries, faqCategoryID: category.categoryID })
               }
             >
@@ -497,7 +507,7 @@ const ProcessInfo = styled.ol`
     flex: 1 1;
     margin: 0 16px;
     padding: 0 0 0 24px;
-    &:not(:first-child) {
+    &:not(:first-of-type) {
       & > span {
         display: block;
         position: relative;
