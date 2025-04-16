@@ -1,4 +1,4 @@
-### 실행 방법
+## 실행 방법
 
 1. 터미널에 yarn install을 통해 의존성을 설치합니다.
 2. 터미널에 yarn dev를 통해 실행시킵니다.
@@ -19,9 +19,25 @@
 7. 서비스 제안서 pdf 다운로드
 8. 플로팅 버튼을 통한 스크롤 최상위로 이동 및 스크롤이 아래로 내려갔을때에만 플로팅버튼 위치
 
-### 아키텍처 및 프로젝트 구조
+## 아키텍처 및 프로젝트 구조
 
-## Repository layer
+### 사용한 기술 스택 / 라이브러리
+
+vite, react, typescript, react-query, axios-mock-adapter, emotion, react-router-dom
+
+### 폴더구조
+
+|-public
+|-src
+|-|-assets
+|-|-components
+|-|-pages
+|-|-queryHooks
+|-|-repositories
+|-|-styles
+|-|-utils
+
+### Repository layer
 
 - 서버와 프론트간의 인터페이스를 하는 repository layer
 - repository layer는 객체지향의 interface를 통하여 컴포넌트와 통신
@@ -31,7 +47,7 @@
 - api의 명세는 types.ts에 정의
 - 각 타입은 model로 class로 정의 (해당 모델은 react-query의 반환 시 변환)
 
-## 비동기 처리 및 model layer (react-query)
+### 비동기 처리 및 model layer (react-query)
 
 - reactHooks 폴더에 repository 별로 queryhook을 개발
 - key를 관리
@@ -39,13 +55,13 @@
 - model을 반환하는 것은 데이터에 대한 비지니스 로직 또는 포멧팅등을 하기 위함
 - 컴포넌트 내부 또는 jsx 내부에서 데이터의 변환, 포멧팅을 제한
 
-## 컴포넌트 layer
+### 컴포넌트 layer
 
 - model과 jsx를 통한 화면 구성
 - emotion의 styled를 통한 스타일링
 - emtoion의 theme을 구성하여 공통의 css를 token으로 제공
 
-### 아쉬운 점
+## 아쉬운 점
 
 시간 관계상 구현 하지 못한 기능
 
