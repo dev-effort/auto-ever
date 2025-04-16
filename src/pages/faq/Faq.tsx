@@ -125,15 +125,20 @@ export const Faq = () => {
         <Label
           htmlFor="all"
           checked={queries.faqCategoryID === undefined}
-          onChange={() =>
-            setQueries({
-              tab: queries.tab,
-              faqCategoryID: undefined,
-              limit: 10,
-              offset: 0,
-              question: undefined,
-            })
-          }
+          onChange={() => {
+            // 검색을 했을 때는 query를 초기화하지 않음
+            if (queries.question) {
+              setQueries({ ...queries, faqCategoryID: undefined });
+            } else {
+              setQueries({
+                tab: queries.tab,
+                faqCategoryID: undefined,
+                limit: 10,
+                offset: 0,
+                question: undefined,
+              });
+            }
+          }}
         >
           전체
         </Label>
@@ -143,15 +148,23 @@ export const Faq = () => {
               key={category.categoryID}
               htmlFor={category.categoryID}
               checked={queries.faqCategoryID === category.categoryID}
-              onChange={() =>
-                setQueries({
-                  tab: queries.tab,
-                  faqCategoryID: category.categoryID,
-                  limit: 10,
-                  offset: 0,
-                  question: undefined,
-                })
-              }
+              onChange={() => {
+                // 검색을 했을 때는 query를 초기화하지 않음
+                if (queries.question) {
+                  setQueries({
+                    ...queries,
+                    faqCategoryID: category.categoryID,
+                  });
+                } else {
+                  setQueries({
+                    tab: queries.tab,
+                    faqCategoryID: category.categoryID,
+                    limit: 10,
+                    offset: 0,
+                    question: undefined,
+                  });
+                }
+              }}
             >
               {category.name}
             </Label>
