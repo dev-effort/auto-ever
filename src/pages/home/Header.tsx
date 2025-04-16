@@ -51,7 +51,7 @@ const HeaderInner = styled.div`
 `;
 
 const Logo = styled.a`
-  background-image: url("/public/logo.svg");
+  background-image: url("/logo.svg");
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;

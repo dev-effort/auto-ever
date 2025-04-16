@@ -1,36 +1,10 @@
 import styled from "@emotion/styled";
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 import { Label } from "../../components/label/Label";
 import { FaqListFilters } from "../../repositories/faqRepository/faq.types";
 import { useGetFaqList } from "../../queryHooks/useFaq";
 import { useGetCategories } from "../../queryHooks/useCategory";
-
-// 아코디언 애니메이션을 위한 컴포넌트
-interface AccordionContentProps {
-  isOpen: boolean;
-  children: React.ReactNode;
-}
-
-const AccordionContent: React.FC<AccordionContentProps> = ({
-  isOpen,
-  children,
-}) => {
-  const contentRef = useRef<HTMLDivElement>(null);
-  const [height, setHeight] = useState<number | undefined>(0);
-
-  useEffect(() => {
-    if (contentRef.current) {
-      const scrollHeight = contentRef.current.scrollHeight;
-      setHeight(isOpen ? scrollHeight : 0);
-    }
-  }, [isOpen, children]);
-
-  return (
-    <AccordionWrapper style={{ height: height === 0 ? "0px" : height }}>
-      <div ref={contentRef}>{children}</div>
-    </AccordionWrapper>
-  );
-};
+import { AccordionContent } from "../../components/accordion/Accordion";
 
 export const Faq = () => {
   const [queries, setQueries] = useState<FaqListFilters>({
@@ -113,57 +87,6 @@ export const Faq = () => {
         })}
       </FilterWrapper>
 
-      <FaqListWrapper>
-        {faqs?.items.map((item) => (
-          <FaqItem key={item.id}>
-            <FaqItemTitle active={item.id === activeFaq}>
-              <FaqItemButton
-                active={item.id === activeFaq}
-                onClick={() => {
-                  if (item.id === activeFaq) {
-                    setActiveFaq(-1);
-                  } else {
-                    setActiveFaq(item.id);
-                  }
-                }}
-              >
-                {queries.tab === "USAGE" && <em>{item.categoryName}</em>}
-                <em>{item.subCategoryName}</em>
-                <strong>{item.question}</strong>
-              </FaqItemButton>
-            </FaqItemTitle>
-            <AccordionContent isOpen={item.id === activeFaq}>
-              <FaqItemInner dangerouslySetInnerHTML={{ __html: item.answer }} />
-            </AccordionContent>
-          </FaqItem>
-        ))}
-      </FaqListWrapper>
-
-      <FaqListWrapper>
-        {faqs?.items.map((item) => (
-          <FaqItem key={item.id}>
-            <FaqItemTitle active={item.id === activeFaq}>
-              <FaqItemButton
-                active={item.id === activeFaq}
-                onClick={() => {
-                  if (item.id === activeFaq) {
-                    setActiveFaq(-1);
-                  } else {
-                    setActiveFaq(item.id);
-                  }
-                }}
-              >
-                {queries.tab === "USAGE" && <em>{item.categoryName}</em>}
-                <em>{item.subCategoryName}</em>
-                <strong>{item.question}</strong>
-              </FaqItemButton>
-            </FaqItemTitle>
-            <AccordionContent isOpen={item.id === activeFaq}>
-              <FaqItemInner dangerouslySetInnerHTML={{ __html: item.answer }} />
-            </AccordionContent>
-          </FaqItem>
-        ))}
-      </FaqListWrapper>
       <FaqListWrapper>
         {faqs?.items.map((item) => (
           <FaqItem key={item.id}>
@@ -321,7 +244,7 @@ const SearchButton = styled.button`
   padding: 0;
 
   ::before {
-    background: url("/public/search.svg") no-repeat;
+    background: url("/search.svg") no-repeat;
     background-color: ${(props) => props.theme.colors.bg.primary};
     background-size: auto 100%;
     content: "검색";
@@ -387,7 +310,7 @@ const FaqItemButton = styled.button<{ active: boolean }>`
     font-weight: 600;
   }
   ::after {
-    background: url("/public/arrow.svg") no-repeat;
+    background: url("/arrow.svg") no-repeat;
     background-size: auto 100%;
     content: "";
     height: 32px;
@@ -398,11 +321,6 @@ const FaqItemButton = styled.button<{ active: boolean }>`
     width: 32px;
     transform: ${(props) => (props.active ? "rotate(180deg)" : "rotate(0deg)")};
   }
-`;
-
-const AccordionWrapper = styled.div`
-  overflow: hidden;
-  transition: height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 `;
 
 const FaqItemInner = styled.div`
