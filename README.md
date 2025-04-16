@@ -55,5 +55,6 @@ vite, react, typescript, react-query, axios-mock-adapter, emotion, react-router-
 
 - 검색어 2자 제한과 modal
 - footer의 이용약관 modal
-- 기존 페이지와 일치하지 않는 미디어쿼리를 이용한 반응형
+- 공통 sytle css을 셋팅 하지 않음
+- 기존 페이지와 일치하지 않는 미디어쿼리 이용한 반응형 (rem을 사용하지 않음)
   시간 관계상 원본과 일치하는 반응형 웹을 구현하지 않고, 임의로 구현하였습니다.
