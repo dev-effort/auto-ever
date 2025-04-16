@@ -68,6 +68,7 @@ export const Faq = () => {
       <FilterWrapper className="filter">
         <Label
           htmlFor="all"
+          checked={queries.faqCategoryID === undefined}
           onClick={() => setQueries({ ...queries, faqCategoryID: undefined })}
         >
           전체
@@ -77,6 +78,7 @@ export const Faq = () => {
             <Label
               key={category.categoryID}
               htmlFor={category.categoryID}
+              checked={queries.faqCategoryID === category.categoryID}
               onClick={() =>
                 setQueries({ ...queries, faqCategoryID: category.categoryID })
               }
@@ -112,6 +114,84 @@ export const Faq = () => {
           </FaqItem>
         ))}
       </FaqListWrapper>
+      <SubHeadline>서비스 문의</SubHeadline>
+      <InquiryInfo>
+        <InquiryButton
+          download="기아 비즈 서비스 제안서.pdf"
+          href="/public/기아 비즈 서비스 제안서.pdf"
+        >
+          <i className="document" />
+          <span>서비스 제안서 다운로드</span>
+        </InquiryButton>
+        <InquiryButton>
+          <i className="write" />
+          <span>상담문의 등록하기</span>
+        </InquiryButton>
+        <InquiryButton>
+          <i className="chat"></i>
+          <span>
+            카톡으로 문의하기
+            <em>ID : 기아 비즈</em>
+          </span>
+        </InquiryButton>
+      </InquiryInfo>
+
+      <SubHeadline>이용 프로세스 안내</SubHeadline>
+      <ProcessInfo>
+        <li>
+          <i className="process-1" />
+          <span>
+            <strong>문의 등록</strong>
+            <em>
+              상담 문의를 등록해 주시면, 담당자가 맞춤형 상담을 제공합니다.
+            </em>
+          </span>
+        </li>
+        <li>
+          <i className="process-2" />
+          <span>
+            <strong>관리자 설정</strong>
+            <em style={{ maxWidth: "225px" }}>
+              관리자 Web 접속 후 결제방식 및 회사정보를 설정합니다.
+            </em>
+          </span>
+        </li>
+        <li>
+          <i className="process-3" />
+          <span>
+            <strong>임직원 가입</strong>
+            <em style={{ maxWidth: "200px" }}>
+              이용자 App에서 회원가입 후 소속 회사 인증을 진행합니다.
+            </em>
+          </span>
+        </li>
+        <li>
+          <i className="process-4" />
+          <span>
+            <strong>서비스 이용</strong>
+            <em style={{ maxWidth: "230px" }}>
+              이용자 App에서 차량 예약을 하고 K존에서 바로 이용하세요!
+            </em>
+          </span>
+        </li>
+      </ProcessInfo>
+      <AppInfo>
+        <h2>
+          <em>기아 비즈 App</em> 지금 만나보세요!
+        </h2>
+        <a
+          className="google"
+          href="https://play.google.com/store/apps/details?id=com.kia.biz.app"
+        >
+          Google Play
+        </a>
+        <a
+          className="appstore"
+          href="https://apps.apple.com/kr/app/%EC%9C%84%EB%B8%94-%EB%B9%84%EC%A6%88/id1598065794"
+        >
+          App Store
+        </a>
+      </AppInfo>
     </Container>
   );
 };
@@ -331,5 +411,230 @@ const FaqItemInner = styled.div`
   padding: 32px 40px;
   * {
     all: revert;
+  }
+`;
+
+const SubHeadline = styled.h2`
+  line-height: 1.4;
+  font-size: 24px;
+  font-weight: 600;
+  margin: 64px 0 24px;
+`;
+
+const InquiryInfo = styled.div`
+  display: flex;
+  margin: 0 -16px;
+`;
+
+const InquiryButton = styled.a`
+  flex: 1 1;
+  margin: 0 16px;
+  background-color: ${(props) => props.theme.colors.bg.primary};
+  border: 1px solid ${(props) => props.theme.colors.border.primary};
+
+  font-size: 18px;
+  height: 80px;
+  min-height: 80px;
+  padding: 0 1.4em;
+
+  align-items: center;
+  display: inline-flex;
+  font-weight: 600;
+  justify-content: center;
+
+  color: ${(props) => props.theme.colors.text.primary};
+  text-decoration: none;
+
+  cursor: pointer;
+
+  & > i {
+    background-repeat: no-repeat;
+    background-size: auto 100%;
+    flex-shrink: 0;
+    height: 48px;
+    margin-right: 8px;
+    width: 48px;
+  }
+  & .document {
+    background-image: url("/document.svg");
+  }
+  & .write {
+    background-image: url("/write.svg");
+  }
+  & .chat {
+    background-image: url("/kakao.svg");
+  }
+  & > span {
+    line-height: 1.4;
+    & > em {
+      color: ${(props) => props.theme.colors.text.secondary};
+      display: block;
+      font-size: 14px;
+      font-weight: 400;
+      font-style: normal;
+    }
+  }
+`;
+
+const ProcessInfo = styled.ol`
+  counter-reset: li;
+  display: flex;
+  line-height: 1.4;
+  margin: 0 -16px;
+  list-style: none;
+  padding: 0;
+  & > li {
+    flex: 1 1;
+    margin: 0 16px;
+    padding: 0 0 0 24px;
+    &:not(:first-child) {
+      & > span {
+        display: block;
+        position: relative;
+        ::before {
+          background: url("/stepArrow.svg") no-repeat;
+          background-size: auto 100%;
+          content: "";
+          height: 24px;
+          left: -36px;
+          position: absolute;
+          top: 0;
+          width: 24px;
+        }
+        & > strong {
+          display: block;
+          font-size: 18px;
+          ::before {
+            content: counter(li) ". ";
+            counter-increment: li;
+          }
+        }
+        & > em {
+          color: #37434c;
+          display: block;
+          font-size: 16px;
+          margin-top: 8px;
+        }
+      }
+    }
+    & > span {
+      display: block;
+      position: relative;
+      & > strong {
+        display: block;
+        font-size: 18px;
+        font-weight: 600;
+        ::before {
+          content: counter(li) ". ";
+          counter-increment: li;
+        }
+      }
+      & > em {
+        color: #37434c;
+        display: block;
+        font-size: 16px;
+        margin-top: 8px;
+      }
+    }
+    & > i {
+      display: block;
+      height: 56px;
+      margin-bottom: 8px;
+      width: 56px;
+      background-repeat: no-repeat;
+      background-size: auto 100%;
+      flex-shrink: 0;
+      font-style: normal;
+    }
+    & .process-1 {
+      background-image: url("/process1.svg");
+    }
+    & .process-2 {
+      background-image: url("/process2.svg");
+    }
+    & .process-3 {
+      background-image: url("/process3.svg");
+    }
+    & .process-4 {
+      background-image: url("/process4.svg");
+    }
+  }
+`;
+
+const AppInfo = styled.div`
+  @media (min-width: 1440px) {
+    margin-top: 64px;
+    padding: 40px;
+  }
+  background-color: ${(props) => props.theme.colors.bg.secondary};
+  border-radius: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 48px;
+  overflow: hidden;
+  padding: 32px;
+
+  & > h2 {
+    @media (min-width: 1440px) {
+      font-size: 32px;
+      margin-bottom: 32px;
+    }
+    & > em {
+      color: ${(props) => props.theme.colors.text.primary};
+      font-style: normal;
+      font-weight: 600;
+    }
+    font-weight: 600;
+    width: 100%;
+    line-height: 1.4;
+    text-align: center;
+    margin: 0;
+  }
+
+  & > a {
+    @media (min-width: 1440px) {
+      font-size: 18px;
+      height: 64px;
+      margin: 0 16px;
+      width: 392px;
+      ::before {
+        height: 32px;
+        width: 32px;
+      }
+    }
+    align-items: center;
+    background: #fff;
+    border-radius: 8px;
+    display: flex;
+    font-size: 16px;
+    font-weight: 600;
+    height: 60px;
+    justify-content: center;
+    margin: 0 8px;
+    width: 296px;
+    color: ${(props) => props.theme.colors.text.primary};
+    text-decoration: none;
+    cursor: pointer;
+
+    ::before {
+      background-repeat: no-repeat;
+      background-size: auto 100%;
+      content: "";
+      height: 28px;
+      margin-right: 4px;
+      width: 28px;
+    }
+  }
+
+  & .google {
+    ::before {
+      background-image: url("/google.svg");
+    }
+  }
+  & .appstore {
+    ::before {
+      background-image: url("/apple.svg");
+    }
   }
 `;

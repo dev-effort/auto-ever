@@ -4,13 +4,19 @@ import { LabelHTMLAttributes, PropsWithChildren } from "react";
 type Props = PropsWithChildren<
   LabelHTMLAttributes<HTMLLabelElement> & {
     htmlFor: string;
+    checked: boolean;
   }
 >;
 
-export const Label = ({ children, htmlFor, ...props }: Props) => {
+export const Label = ({ children, htmlFor, checked, ...props }: Props) => {
   return (
     <Container htmlFor={htmlFor} {...props}>
-      <UnvisibleInput type="radio" id={htmlFor} name="filter" />
+      <UnvisibleInput
+        type="radio"
+        id={htmlFor}
+        name="filter"
+        checked={checked}
+      />
       <LabelText>{children}</LabelText>
     </Container>
   );
